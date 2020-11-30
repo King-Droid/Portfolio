@@ -394,14 +394,13 @@ class HomePage extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          '5 years (Android)',
-          style: TextStyles.body,
+        Expanded(
+          flex: 1,
+          child: Text(
+            '5 years (Android), 2 years (Flutter)',
+            style: TextStyles.body,
+          ),
         ),
-        Text(
-          ' + 2 years (Flutter)',
-          style: TextStyles.body,
-        )
       ],
     );
   }
