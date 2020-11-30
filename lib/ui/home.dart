@@ -9,6 +9,7 @@ import 'package:portfolio/constants/text_styles.dart';
 import 'package:portfolio/models/education.dart';
 import 'package:portfolio/utils/screen/screen_utils.dart';
 import 'package:portfolio/widgets/responsive_widget.dart';
+
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
@@ -18,8 +19,6 @@ List<Widget> imageSliders;
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     imgList.add("app1/screen1.png");
     imgList.add("app1/screen2.png");
     imgList.add("app1/screen3.png");
@@ -28,19 +27,21 @@ class HomePage extends StatelessWidget {
     imgList.add("app1/screen6.png");
     imgList.add("app1/screen7.png");
 
-    imageSliders = imgList.map((item) => Container(
-      child: Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            child: Stack(
-              children: <Widget>[
-                Image.asset("projects/"+item, fit: BoxFit.fitHeight, width: 600.0),
-              ],
-            )
-        ),
-      ),
-    )).toList();
+    imageSliders = imgList
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.asset("projects/" + item,
+                            fit: BoxFit.fitHeight, width: 600.0),
+                      ],
+                    )),
+              ),
+            ))
+        .toList();
 
     return Material(
       color: Color(0xFFF7F8FA),
@@ -244,17 +245,17 @@ class HomePage extends StatelessWidget {
                 ],
               )
             /*: _buildSkillsAndEducation(context),*/
-        : Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            //_buildEducation(),
-            SizedBox(height: 24.0),
-            _buildSkills(context),
-            SizedBox(height: 24.0),
-            _buildProjects(context),
-          ],
-        ),
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  //_buildEducation(),
+                  SizedBox(height: 24.0),
+                  _buildSkills(context),
+                  SizedBox(height: 24.0),
+                  _buildProjects(context),
+                ],
+              ),
       ],
     );
   }
@@ -429,17 +430,32 @@ class HomePage extends StatelessWidget {
 
   Widget _buildProjects(BuildContext context) {
     return Container(
-      margin :  EdgeInsets.only(top:50),
-      child:Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _buildProjectsContainerHeading(),
-        SizedBox(width:40.0),
-        _buildProjectsDetails(),
-        SizedBox(width:50.0),
-        _buildProjectsCard(context),
-      ],
-    ),);
+      margin: EdgeInsets.only(top: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildProjectsContainerHeading(),
+          SizedBox(width: 40.0),
+          _buildProjectsDetails(),
+          SizedBox(width: 50.0),
+          ResponsiveWidget.isSmallScreen(context)
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildProjectsCard(context),
+                    _buildProjectContent(context),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildProjectsCard(context),
+                    _buildProjectContent(context),
+                  ],
+                )
+        ],
+      ),
+    );
   }
 
   Widget _buildEducationContainerHeading() {
@@ -456,20 +472,42 @@ class HomePage extends StatelessWidget {
     );
   }
 
-
+  Widget _buildProjectContent(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text(
+              "Khaad Dealer",
+              style: TextStyles.sub_heading,
+            ),
+          ),
+          SizedBox(width: 40.0),
+          Container(
+            child: Text(
+              'Get online with Khaad Dealer, connect with your network and grow your business with information at your fingertips. Here are a few of the many benefits that Khaad Dealer provides for the fertilizer dealers and farmers: \n 1. Analyze your stock and sales v/s your peer \n 2. Know what the farmers are purchasing in your distric \n 3. Directly connect with your distributors and retailers \n 4. Automated notifications with updates on stock and sales \n 5. Get competitive analysis, stock reorder alerts, and secondary sales digitization',
+              style: TextStyles.body,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildProjectsCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 50),
-      height: 600,
-        child: CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            aspectRatio: 1.0,
-            enlargeCenterPage: true,
-          ),
-          items: imageSliders,
+      height: 400,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: true,
+          aspectRatio: 1.0,
+          enlargeCenterPage: true,
         ),
+        items: imageSliders,
+      ),
     );
   }
 
