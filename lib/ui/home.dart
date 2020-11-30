@@ -207,9 +207,13 @@ class HomePage extends StatelessWidget {
                   _buildEducation(),
                   SizedBox(height: 24.0),
                   _buildSkills(context),
+                  SizedBox(height: 24.0),
+                  _buildProjects(),
                 ],
               )
-            : _buildSkillsAndEducation(context)
+            : _buildSkillsAndEducation(context),
+        SizedBox(height: 24.0),
+        _buildProjects(),
       ],
     );
   }
@@ -382,10 +386,44 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildProjects() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildProjectsContainerHeading(),
+        SizedBox(width:40.0),
+        _buildProjectsDetails(),
+      ],
+    );
+  }
+
   Widget _buildEducationContainerHeading() {
     return Text(
       Strings.experience,
       style: TextStyles.sub_heading,
+    );
+  }
+
+  Widget _buildProjectsContainerHeading() {
+    return Text(
+      Strings.projects,
+      style: TextStyles.sub_heading_bold,
+    );
+  }
+
+  Widget _buildProjectsDetails() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Text(
+            'Here are some of my Projects I worked and delivered utilizing my knowledge and skills. I have worked on multiple apps in different domain of varying features based on product or client requirements.',
+            style: TextStyles.body,
+          ),
+        ),
+      ],
     );
   }
 

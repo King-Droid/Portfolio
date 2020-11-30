@@ -12,6 +12,7 @@ class Strings {
   static const String experience = 'Experience';
   static const String skills_i_have = 'What Skill I Have';
   static const String rights_reserved = '© 2020 Portfolio. ALL RIGHTS RESERVED.';
+  static const String projects = 'Projects';
 
   // menu items
   static const String menu_about = 'About';

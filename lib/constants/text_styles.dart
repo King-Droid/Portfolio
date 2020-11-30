@@ -34,6 +34,13 @@ class TextStyles {
         letterSpacing: 1.2,
       );
 
+  static TextStyle get sub_heading_bold => TextStyle(
+    color: Color(0xFF45405B),
+    fontFamily: Fonts.nexa_bold,
+    fontSize: 18.0, //17.0
+    letterSpacing: 1.2,
+  );
+
   static TextStyle get company => TextStyle(
     fontFamily: Fonts.product,
     color: Color(0xFF45405B),
