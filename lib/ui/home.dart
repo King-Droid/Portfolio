@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio/constants/assets.dart';
 import 'package:portfolio/constants/fonts.dart';
@@ -6,11 +9,39 @@ import 'package:portfolio/constants/text_styles.dart';
 import 'package:portfolio/models/education.dart';
 import 'package:portfolio/utils/screen/screen_utils.dart';
 import 'package:portfolio/widgets/responsive_widget.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+
+List imgList = new List<String>();
+List<Widget> imageSliders;
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
+    imgList.add("app1/screen1.png");
+    imgList.add("app1/screen2.png");
+    imgList.add("app1/screen3.png");
+    imgList.add("app1/screen4.png");
+    imgList.add("app1/screen5.png");
+    imgList.add("app1/screen6.png");
+    imgList.add("app1/screen7.png");
+
+    imageSliders = imgList.map((item) => Container(
+      child: Container(
+        margin: EdgeInsets.all(5.0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: Stack(
+              children: <Widget>[
+                Image.asset("projects/"+item, fit: BoxFit.fitHeight, width: 600.0),
+              ],
+            )
+        ),
+      ),
+    )).toList();
+
     return Material(
       color: Color(0xFFF7F8FA),
       child: Padding(
@@ -128,6 +159,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: Row(
               mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(flex: 1, child: _buildContent(context)),
                 _buildIllustration(),
@@ -204,16 +236,25 @@ class HomePage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildEducation(),
+                  //_buildEducation(),
                   SizedBox(height: 24.0),
                   _buildSkills(context),
                   SizedBox(height: 24.0),
-                  _buildProjects(),
+                  _buildProjects(context),
                 ],
               )
-            : _buildSkillsAndEducation(context),
-        SizedBox(height: 24.0),
-        _buildProjects(),
+            /*: _buildSkillsAndEducation(context),*/
+        : Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            //_buildEducation(),
+            SizedBox(height: 24.0),
+            _buildSkills(context),
+            SizedBox(height: 24.0),
+            _buildProjects(context),
+          ],
+        ),
       ],
     );
   }
@@ -282,11 +323,11 @@ class HomePage extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
+        /*Expanded(
           flex: 1,
           child: _buildEducation(),
         ),
-        SizedBox(width: 40.0),
+        SizedBox(width: 40.0),*/
         Expanded(
           flex: 1,
           child: _buildSkills(context),
@@ -386,15 +427,19 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProjects() {
-    return Column(
+  Widget _buildProjects(BuildContext context) {
+    return Container(
+      margin :  EdgeInsets.only(top:50),
+      child:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildProjectsContainerHeading(),
         SizedBox(width:40.0),
         _buildProjectsDetails(),
+        SizedBox(width:50.0),
+        _buildProjectsCard(context),
       ],
-    );
+    ),);
   }
 
   Widget _buildEducationContainerHeading() {
@@ -408,6 +453,23 @@ class HomePage extends StatelessWidget {
     return Text(
       Strings.projects,
       style: TextStyles.sub_heading_bold,
+    );
+  }
+
+
+
+  Widget _buildProjectsCard(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      height: 600,
+        child: CarouselSlider(
+          options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 1.0,
+            enlargeCenterPage: true,
+          ),
+          items: imageSliders,
+        ),
     );
   }
 
