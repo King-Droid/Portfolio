@@ -16,9 +16,19 @@ import 'dart:html' as html;
 List imgList = new List<String>();
 List<Widget> imageSliders;
 
+_getProjectsData(BuildContext context) async
+{
+  String data = await DefaultAssetBundle.of(context).loadString("assets/projectsData.json");
+  final jsonResult = json.decode(data);
+
+}
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    //_getProjectsData();
+
     imgList.add("app1/screen1.png");
     imgList.add("app1/screen2.png");
     imgList.add("app1/screen3.png");
@@ -28,19 +38,20 @@ class HomePage extends StatelessWidget {
     imgList.add("app1/screen7.png");
 
     imageSliders = imgList
-        .map((item) => Container(
-              child: Container(
-                margin: EdgeInsets.all(5.0),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      children: <Widget>[
-                        Image.asset("projects/" + item,
-                            fit: BoxFit.fitHeight, width: 600.0),
-                      ],
-                    )),
-              ),
-            ))
+        .map((item) =>
+        Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset("projects/" + item,
+                        fit: BoxFit.fitHeight, width: 600.0),
+                  ],
+                )),
+          ),
+        ))
         .toList();
 
     return Material(
@@ -68,7 +79,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       actions:
-          !ResponsiveWidget.isSmallScreen(context) ? _buildActions() : null,
+      !ResponsiveWidget.isSmallScreen(context) ? _buildActions() : null,
     );
   }
 
@@ -128,11 +139,11 @@ class HomePage extends StatelessWidget {
   Widget _buildDrawer(BuildContext context) {
     return ResponsiveWidget.isSmallScreen(context)
         ? Drawer(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: _buildActions(),
-            ),
-          )
+      child: ListView(
+        padding: const EdgeInsets.all(20),
+        children: _buildActions(),
+      ),
+    )
         : null;
   }
 
@@ -157,16 +168,16 @@ class HomePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(flex: 1, child: _buildContent(context)),
-                _buildIllustration(),
-              ],
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(flex: 1, child: _buildContent(context)),
+              _buildIllustration(),
+            ],
           ),
+               SizedBox(height: 16.0),
+              _buildProjects(context),
           _buildFooter(context)
         ],
       ),
@@ -187,6 +198,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          _buildProjects(context),
           _buildFooter(context)
         ],
       ),
@@ -199,6 +211,8 @@ class HomePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(flex: 1, child: _buildContent(context)),
+          SizedBox(height: 16.0),
+          _buildProjects(context),
           Divider(),
           _buildCopyRightText(context),
           SizedBox(
@@ -234,28 +248,28 @@ class HomePage extends StatelessWidget {
         SizedBox(height: ResponsiveWidget.isSmallScreen(context) ? 24.0 : 48.0),
         ResponsiveWidget.isSmallScreen(context)
             ? Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  //_buildEducation(),
-                  SizedBox(height: 24.0),
-                  _buildSkills(context),
-                  SizedBox(height: 24.0),
-                  _buildProjects(context),
-                ],
-              )
-            /*: _buildSkillsAndEducation(context),*/
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            //_buildEducation(),
+            SizedBox(height: 24.0),
+            _buildSkills(context),
+            /* SizedBox(height: 24.0),
+                  _buildProjects(context),*/
+          ],
+        )
+        /*: _buildSkillsAndEducation(context),*/
             : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  //_buildEducation(),
-                  SizedBox(height: 24.0),
-                  _buildSkills(context),
-                  SizedBox(height: 24.0),
-                  _buildProjects(context),
-                ],
-              ),
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            //_buildEducation(),
+            SizedBox(height: 24.0),
+            _buildSkills(context),
+            /* SizedBox(height: 24.0),
+                  _buildProjects(context),*/
+          ],
+        ),
       ],
     );
   }
@@ -357,10 +371,11 @@ class HomePage extends StatelessWidget {
 
   Widget _buildSkills(BuildContext context) {
     final List<Widget> widgets = skills
-        .map((skill) => Padding(
-              padding: EdgeInsets.only(right: 8.0, bottom: 10, top: 5),
-              child: _buildSkillChip(context, skill),
-            ))
+        .map((skill) =>
+        Padding(
+          padding: EdgeInsets.only(right: 8.0, bottom: 10, top: 5),
+          child: _buildSkillChip(context, skill),
+        ))
         .toList();
 
     return Column(
@@ -440,21 +455,35 @@ class HomePage extends StatelessWidget {
           SizedBox(width: 50.0),
           ResponsiveWidget.isSmallScreen(context)
               ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildProjectsCard(context),
-                    _buildProjectContent(context),
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildProjectsCard(context),
-                    _buildProjectContent(context),
-                  ],
-                )
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildProjectsCard(context),
+              _buildProjectContent(context),
+              _buildProjectsCard(context),
+              _buildProjectContent2(context),
+            ],
+          )
+              : Container(
+          child:Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+            flex: 1,
+            child:_buildProjectsCard(context),),
+            Expanded(
+              flex: 1,
+              child:_buildProjectContent(context),), Expanded(
+            flex: 1,
+            child:_buildProjectsCard(context),),
+            Expanded(
+              flex: 1,
+              child:_buildProjectContent2(context),),
         ],
-      ),
+      ),)],
+    )
+    ,
     );
   }
 
@@ -479,6 +508,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
+            margin: EdgeInsets.only(bottom: 10),
             child: Text(
               "Khaad Dealer",
               style: TextStyles.sub_heading,
@@ -496,15 +526,57 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildProjectContent2(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Text(
+              "My Follow Up",
+              style: TextStyles.sub_heading,
+            ),
+          ),
+          SizedBox(width: 40.0),
+          Container(
+            child: Text(
+              'My Follow Up is a smartphone application specially designed by a group of senior doctors keeping in mind the intricate relationship of the doctor and his or her patient for an online follow up . My Follow Up main desire is to keep it simple yet informative. My Follow Up enables patients to upload their reports before the call so that doctors can examine, diagnose accordingly and give medical advice on a simple phone call, followed by an online prescription.',
+              style: TextStyles.body,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProjectsCard(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 50),
-      height: 400,
+      height: 350,
       child: CarouselSlider(
         options: CarouselOptions(
           autoPlay: true,
           aspectRatio: 1.0,
           enlargeCenterPage: true,
+          disableCenter: true
+        ),
+        items: imageSliders,
+      ),
+    );
+  }
+
+  Widget _buildProjectsCard2(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      height: 350,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: true,
+          aspectRatio: 1.0,
+          enlargeCenterPage: true,
+          disableCenter: true
         ),
         items: imageSliders,
       ),
@@ -512,19 +584,21 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildProjectsDetails() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Text(
-            'Here are some of my Projects I worked and delivered utilizing my knowledge and skills. I have worked on multiple apps in different domain of varying features based on product or client requirements.',
-            style: TextStyles.body,
+    return Container(
+      margin: EdgeInsets.only(top: 10, bottom: 15),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Here are some of my Projects I worked and delivered utilizing my knowledge and skills.',
+              style: TextStyles.body,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      ),);
   }
 
   Widget _buildEducationSummary() {

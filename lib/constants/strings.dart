@@ -10,7 +10,7 @@ class Strings {
   static const String headline_part2 = 'Delhi-NCR, India';
   static const String summary = 'Focused professional having excellent technical and communication skills, and offering 7 years of experience in Mobile application development. Proficient at designing and developing Android native and Flutter Hybrid apps development. Specialize in thinking outside the box to find unique solutions to difficult engineering problems.';
   static const String experience = 'Experience';
-  static const String skills_i_have = 'What Skill I Have';
+  static const String skills_i_have = 'What Skills I Have';
   static const String rights_reserved = '© 2020 Portfolio. ALL RIGHTS RESERVED.';
   static const String projects = 'Projects';
 
