@@ -20,14 +20,14 @@ _getProjectsData(BuildContext context) async
 {
   String data = await DefaultAssetBundle.of(context).loadString("assets/projectsData.json");
   final jsonResult = json.decode(data);
-
+   print(data);
 }
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //_getProjectsData();
+    _getProjectsData(context);
 
     imgList.add("app1/screen1.png");
     imgList.add("app1/screen2.png");
